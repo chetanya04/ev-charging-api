@@ -90,7 +90,7 @@ const getMarkerColor = (status) => {
 
 const fetchChargers = async () => {
   loading.value = true;
-  const res = await axios.get('https://ev-charging-api-j4kg.onrender.com/stations');
+  const res = await axios.get('/stations');
   chargers.value = res.data;
   loading.value = false;
   return res.data;

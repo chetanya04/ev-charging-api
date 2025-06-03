@@ -52,7 +52,7 @@ const props = defineProps({
 });
 
 const fetchChargers = async () => {
-  const res = await axios.get('https://ev-charging-api-j4kg.onrender.com/stations');
+  const res = await axios.get('/stations');
   chargers.value = res.data;
 };
 
@@ -68,7 +68,7 @@ const onEdit = (charger) => {
 
 const onDelete = async (id) => {
   if (confirm('Are you sure you want to delete this charger?')) {
-    await axios.delete(`https://ev-charging-api-j4kg.onrender.com/stations/${id}`);
+    await axios.delete(`/stations/${id}`);
     await fetchChargers();
   }
 };
