@@ -2,9 +2,17 @@
   <div class="dashboard">
     <div class="header">
       <h1>Charging Stations Management</h1>
-      <button @click="showAddForm" class="add-btn">
-        Add New Charger
-      </button>
+      <div class="header-actions">
+        <button @click="showAddForm" class="add-btn">
+          Add New Charger
+        </button>
+        <button @click="goToMap" class="map-btn">
+          View Map
+        </button>
+        <button @click="handleLogout" class="logout-btn">
+          Logout
+        </button>
+      </div>
     </div>
 
     <ChargerList
@@ -25,13 +33,27 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from '@/components/services/api.js';
 import ChargerList from '@/components/ChargerList.vue';
 import ChargerForm from '@/components/ChargerForm.vue';
 
+const router = useRouter();
 const chargers = ref([]);
 const showForm = ref(false);
 const editingCharger = ref(null);
+
+// If you're using the composable approach, uncomment this:
+// import { useAuth } from '@/composables/useAuth.js';
+// const { logout } = useAuth();
+
+// If you're using props approach, add this prop:
+const props = defineProps({
+  setIsAuthenticated: {
+    type: Function,
+    required: false // Make it optional since you might use composable
+  }
+});
 
 const fetchChargers = async () => {
   const res = await axios.get('/stations');
@@ -65,6 +87,26 @@ const onSaved = () => {
   fetchChargers();
 };
 
+const goToMap = () => {
+  router.push('/map');
+};
+
+const handleLogout = () => {
+  // Remove token from localStorage
+  localStorage.removeItem('token');
+  
+  // Update authentication state
+  if (props.setIsAuthenticated) {
+    props.setIsAuthenticated(false);
+  }
+  
+  // If using composable approach, uncomment this:
+  // logout();
+  
+  // Redirect to login page
+  router.push('/');
+};
+
 onMounted(() => {
   fetchChargers();
 });
@@ -89,6 +131,12 @@ onMounted(() => {
   margin: 0;
 }
 
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 .add-btn {
   background: #28a745;
   color: white;
@@ -102,5 +150,35 @@ onMounted(() => {
 
 .add-btn:hover {
   background: #218838;
+}
+
+.map-btn {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.map-btn:hover {
+  background: #138496;
+}
+
+.logout-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.logout-btn:hover {
+  background: #c82333;
 }
 </style>

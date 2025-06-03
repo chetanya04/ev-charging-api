@@ -27,6 +27,10 @@
       </button>
       <p v-if="error" class="error-message">{{ error }}</p>
     </form>
+    
+    <div class="register-link">
+      <p>Don't have an account? <router-link to="/register" class="link">Register here</router-link></p>
+    </div>
   </div>
 </template>
 
@@ -34,6 +38,14 @@
 import { ref } from 'vue'
 import axios from '../services/api.js'
 import { useRouter } from 'vue-router'
+
+// Add props to receive authentication state functions from parent
+const props = defineProps({
+  setIsAuthenticated: {
+    type: Function,
+    required: true
+  }
+})
 
 const email = ref('')
 const password = ref('')
@@ -57,6 +69,10 @@ const handleLogin = async () => {
     
     if (response.data.token) {
       localStorage.setItem('token', response.data.token)
+      
+      // Update the global authentication state
+      props.setIsAuthenticated(true)
+      
       router.push('/dashboard')
     } else {
       error.value = 'Login failed: No token received'
@@ -138,5 +154,30 @@ label {
   margin-top: 1rem;
   font-size: 0.9rem;
   text-align: center;
+}
+
+.register-link {
+  margin-top: 1.5rem;
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.register-link p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
 </style>

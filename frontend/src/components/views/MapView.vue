@@ -18,6 +18,7 @@
           <option value="Tesla">Tesla</option>
         </select>
         <button @click="refreshMap" class="refresh-btn">Refresh</button>
+        <button @click="goToDashboard" class="dashboard-btn">Dashboard</button>
       </div>
     </div>
 
@@ -51,10 +52,12 @@
 
 <script setup>
 import { onMounted, ref, computed, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from '../services/api.js';
 
+const router = useRouter();
 const map = ref(null);
 const chargers = ref([]);
 const markers = ref([]);
@@ -148,6 +151,10 @@ const refreshMap = async () => {
   addMarkers();
 };
 
+const goToDashboard = () => {
+  router.push('/dashboard');
+};
+
 onMounted(async () => {
   // Initialize map
   map.value = L.map('map').setView([20, 0], 2);
@@ -222,6 +229,19 @@ onUnmounted(() => {
 
 .refresh-btn:hover {
   background: #0056b3;
+}
+
+.dashboard-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+.dashboard-btn:hover {
+  background: #1e7e34;
 }
 
 .map-stats {
@@ -307,7 +327,7 @@ onUnmounted(() => {
     width: 100%;
   }
 
-  .filter-select {
+  .filter-select, .refresh-btn, .dashboard-btn {
     width: 100%;
   }
 
