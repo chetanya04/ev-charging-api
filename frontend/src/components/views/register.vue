@@ -24,7 +24,7 @@ const router = useRouter();
 
 const handleRegister = async () => {
   try {
-    await axios.post('http://localhost:5000/api/auth/register', {
+    await axios.post('https://ev-charging-api-j4kg.onrender.com/api/auth/register', {
       name: name.value,
       email: email.value,
       password: password.value,

@@ -10,6 +10,11 @@ const _dirname = path.resolve()
 // Middleware
 app.use(cors());
 app.use(express.json());
+const corsOption = {
+  origin: "https://ev-charging-api-j4kg.onrender.com/",
+  Credentials: true
+}
+app.use(corsOption())
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');

@@ -60,7 +60,7 @@ const handleLogin = async () => {
   try {
     console.log('Attempting login for:', email.value)
     
-    const response = await axios.post('/auth/login', {
+    const response = await axios.post('https://ev-charging-api-j4kg.onrender.com/auth/login', {
       email: email.value,
       password: password.value,
     })
