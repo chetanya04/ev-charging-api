@@ -14,7 +14,8 @@ const corsOption = {
   origin: "https://ev-charging-api-j4kg.onrender.com/",
   Credentials: true
 }
-app.use(corsOption())
+app.use(cors(corsOption))
+
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
