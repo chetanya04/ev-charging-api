@@ -22,6 +22,7 @@
           class="form-input"
         />
       </div>
+      
       <button type="submit" :disabled="loading" class="submit-btn">
         {{ loading ? 'Logging in...' : 'Login' }}
       </button>
@@ -60,7 +61,7 @@ const handleLogin = async () => {
   try {
     console.log('Attempting login for:', email.value)
     
-    const response = await axios.post('https://ev-charging-api-j4kg.onrender.com/auth/login', {
+    const response = await axios.post('/auth/login', {
       email: email.value,
       password: password.value,
     })
@@ -75,7 +76,7 @@ const handleLogin = async () => {
       
       router.push('/dashboard')
     } else {
-      error.value = 'Login failed: No token received'
+      error.value = 'Login failed'
     }
     
   } catch (err) {
